@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Secrets: NEVER commit
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+
+# Old SQLite file
+*.db
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Test output
+test-results/
+playwright-report/

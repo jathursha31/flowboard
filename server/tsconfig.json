@@ -1,0 +1,19 @@
+{
+  // 🟦 TypeScript: lib/*.ts files strict ah check aagum. Matha .js files mella mella maathalaam.
+  // Node 24 .ts files ah nerada oadum (build step illa), adhanaala tsc check mattum pannum (noEmit)
+  "compilerOptions": {
+    "target": "es2023",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "strict": true,
+    "allowJs": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["**/*.ts", "**/*.js", "**/*.mjs"],
+  "exclude": ["node_modules"]
+}

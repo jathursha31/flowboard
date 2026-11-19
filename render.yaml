@@ -1,0 +1,28 @@
+# 🚀 Render Blueprint: website + API ore server la (Express flowboard/dist ah serve pannum)
+# Render dashboard → New → Blueprint → intha repo. "sync: false" values ah Render kekkum (neenga type pannuveenga, Git la illa)
+services:
+  - type: web
+    name: flowboard
+    runtime: node
+    plan: free
+    region: singapore # Atlas Mumbai ku pakkam
+    buildCommand: cd flowboard && npm ci && npm run build && cd ../server && npm ci --omit=dev
+    startCommand: cd server && node index.ts
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: TRUST_PROXY
+        value: "1" # Render proxy pinnaadi: unmaiyaana IP + HTTPS therinjukka
+      - key: MONGODB_URI
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: APP_URL
+        sync: false # https://flowboard-xxxx.onrender.com
+      # Optional (venumna Render dashboard la apram serkkalaam):
+      # ANTHROPIC_API_KEY, GOOGLE_CLIENT_ID, RESEND_API_KEY, EMAIL_FROM,
+      # STRIPE_SECRET_KEY, STRIPE_PRICE_ID, STRIPE_WEBHOOK_SECRET

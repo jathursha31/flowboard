@@ -1,0 +1,11 @@
+# Docker build ku anuppa vendaathavai (vegam + secrets safe)
+**/node_modules
+**/.env
+**/.env.*
+!**/.env.example
+flowboard/dist
+**/test-results
+**/playwright-report
+.git
+docs
+*.db

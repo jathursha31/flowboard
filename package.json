@@ -1,0 +1,12 @@
+{
+  "name": "flowboard",
+  "private": true,
+  "description": "Shortcuts: run these from this outer folder too (npm run dev / npm start / npm test)",
+  "scripts": {
+    "dev": "npm run dev --prefix server",
+    "start": "npm start --prefix server",
+    "build": "npm run build --prefix flowboard",
+    "test": "npm test --prefix server && npm test --prefix flowboard",
+    "typecheck": "npm run typecheck --prefix server && npm run typecheck --prefix flowboard"
+  }
+}
