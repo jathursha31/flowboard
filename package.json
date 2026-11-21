@@ -7,6 +7,7 @@
     "start": "npm start --prefix server",
     "build": "npm run build --prefix flowboard",
     "test": "npm test --prefix server && npm test --prefix flowboard",
-    "typecheck": "npm run typecheck --prefix server && npm run typecheck --prefix flowboard"
+    "typecheck": "npm run typecheck --prefix server && npm run typecheck --prefix flowboard",
+    "deploy:hf": "node scripts/deploy-hf.mjs"
   }
 }
