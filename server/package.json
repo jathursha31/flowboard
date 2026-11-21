@@ -7,7 +7,8 @@
     "start": "node index.ts",
     "dev": "node --watch index.ts",
     "test": "node --test --test-concurrency=1 \"test/**/*.test.js\"",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "build:vercel": "node vercel/build.mjs"
   },
   "keywords": [],
   "author": "",
@@ -25,9 +26,10 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "@types/web-push": "^3.6.4",
+    "esbuild": "^0.25.12",
     "typescript": "^5.7.2"
   },
   "engines": {
-    "node": ">=24"
+    "node": "24.x"
   }
 }

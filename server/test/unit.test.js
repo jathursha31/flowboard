@@ -190,7 +190,7 @@ describe('API docs (OpenAPI)', () => {
     };
     walk(createApp().router.stack);
 
-    const internal = ['/api/hello', '/api/messages', '/api/docs', '/api/openapi.json', '/api/admin/metrics']; // test / admin-only / docs page itself
+    const internal = ['/api/hello', '/api/messages', '/api/docs', '/api/openapi.json', '/api/admin/metrics', '/api/cron/reminders']; // test / admin-only / docs page itself
     const missing = routes
       .filter(([, path]) => path.startsWith('/api/') && !internal.includes(path))
       .map(([method, path]) => [method, path.replace(/:(\w+)/g, '{$1}')])

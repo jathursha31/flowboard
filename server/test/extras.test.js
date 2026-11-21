@@ -26,7 +26,7 @@ const tokenFrom = (mail) => mail.text.match(/token=([0-9a-f]{64})/)[1];
 describe('config', () => {
   it('tells the website which optional features are on', async () => {
     const res = (await makeClient(app.url).get('/api/config')).body;
-    assert.deepEqual(res, { googleClientId: CLIENT_ID, emailEnabled: false, billingEnabled: false });
+    assert.deepEqual(res, { googleClientId: CLIENT_ID, emailEnabled: false, billingEnabled: false, live: 'sse' });
   });
 });
 

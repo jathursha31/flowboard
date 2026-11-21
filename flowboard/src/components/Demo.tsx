@@ -43,6 +43,7 @@ import { cacheGet, cacheSet, flushOutbox, isFlushing, isNetworkError, newTempId,
 import { confetti } from '../confetti.ts'; // 🆕 🎉
 import { trackEvent } from '../analytics.ts'; // 🆕 📊
 import { useAuth } from '../context/AuthContext.tsx';
+import { useConfig } from '../hooks/useConfig.ts'; // ▲ Vercel la polling
 import { useToast } from '../context/ToastContext.tsx';
 import { useLang } from '../context/LanguageContext.tsx'; // 🆕 🌐 (home page heading ku)
 
@@ -146,6 +147,7 @@ export default function Demo({ standalone = false }: { standalone?: boolean }) {
   boardIdRef.current = boardId;
 
   const storageKey = `flowboard-board-${user?.email ?? 'public'}`;
+  const { live: liveMode } = useConfig(); // 'poll' na Vercel (serverless)
   const board = boards.find((b) => b.id === boardId) ?? null;
   const labelById = useMemo(() => new Map((board?.labels ?? DEFAULT_LABELS).map((l) => [l.id, l])), [board]); // 🏷️
   const columns = board?.columns ?? [];
@@ -250,7 +252,20 @@ export default function Demo({ standalone = false }: { standalone?: boolean }) {
 
   // 🆕 ⚡ LIVE: friend (illa vera tab) intha board la maathinaa, ungal screen um udane maarum
   useEffect(() => {
-    if (!boardId || typeof EventSource === 'undefined') return undefined;
+    if (!boardId) return undefined;
+    // ▲ Vercel (serverless) la live connection nikkaadhu: 15 second ku oru thadavai pudhu tasks + chat kelu
+    if (liveMode === 'poll') {
+      setChatUnread(0);
+      const id = setInterval(() => {
+        if (document.hidden) return; // tab paakkaama irundhaa vendaam
+        refreshTasks()
+          .then(() => setLiveTick((n) => n + 1))
+          .catch(() => {});
+        setChatTick((n) => n + 1);
+      }, 15_000);
+      return () => clearInterval(id);
+    }
+    if (typeof EventSource === 'undefined') return undefined;
     const source = new EventSource(`/api/boards/${boardId}/events`);
     let timer: ReturnType<typeof setTimeout> | undefined;
     source.onopen = () => setLive(true);
@@ -295,7 +310,7 @@ export default function Demo({ standalone = false }: { standalone?: boolean }) {
       setLive(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [boardId]);
+  }, [boardId, liveMode]);
 
   // 🆕 👤 Share panna board na, yaar yaar irukkaanga nu edu (assign dropdown + card avatar ku)
   const shared = Boolean(board && (board.memberCount > 0 || board.role === 'member'));

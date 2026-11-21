@@ -5,6 +5,7 @@ export interface AppConfig {
   googleClientId: string | null;
   emailEnabled: boolean;
   billingEnabled?: boolean; // 💳 Stripe keys server la irukkaa
+  live?: 'sse' | 'poll'; // ⚡ live updates eppadi (Vercel la 'poll')
 }
 
 // ⚙️ Server la endha optional features on nu (Google login, email) oru thadavai kettu nyaabagam vechukko

@@ -20,3 +20,8 @@ Thumbs.db
 # Test output
 test-results/
 playwright-report/
+
+# Vercel build output
+.vercel/
+.vercel-build/
+server/public/

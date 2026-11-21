@@ -101,7 +101,8 @@ router.get('/api/auth/me', (req, res) => {
 
 // 🆕 ⚙️ Website ku: endha optional features on (Google button kaattalaamaa, email irukkaa)
 router.get('/api/config', (req, res) => {
-  res.json({ googleClientId: process.env.GOOGLE_CLIENT_ID || null, emailEnabled: emailEnabled(), billingEnabled: billingEnabled() });
+  // live: 'sse' = live connection (normal server), 'poll' = Vercel maari serverless la 15 second ku oru thadavai kelu
+  res.json({ googleClientId: process.env.GOOGLE_CLIENT_ID || null, emailEnabled: emailEnabled(), billingEnabled: billingEnabled(), live: process.env.VERCEL ? 'poll' : 'sse' });
 });
 
 // 🆕 🔑 FORGOT PASSWORD: reset link email la anuppu (1 mani neram mattum vela seiyum)

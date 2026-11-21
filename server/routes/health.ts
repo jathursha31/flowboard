@@ -2,6 +2,7 @@ import express from 'express';
 import { db } from '../db.ts';
 import { requireAdmin } from '../lib/auth.ts';
 import { metricsSnapshot } from '../lib/observability.ts';
+import { sendDueReminders } from '../lib/notify.ts';
 
 // 🩺 Health: hosting (Render, Docker) "server uyiroda irukkaa?" nu adikkadi kekkum
 const router = express.Router();
@@ -30,6 +31,14 @@ router.get('/api/health', async (req, res) => {
 // 👮 Admin mattum: full numbers (admin page "Server health" section um ithai use pannum)
 router.get('/api/admin/metrics', requireAdmin, async (req, res) => {
   res.json({ ...metricsSnapshot(), database: await dbPing() });
+});
+
+// ⏰ Vercel Cron (naal ku oru thadavai): due date reminders. Normal server la index.ts mani ku oru thadavai pannum
+// Vercel "Authorization: Bearer <CRON_SECRET>" anuppum: secret illaama yaarum trigger panna mudiyaadhu
+router.get('/api/cron/reminders', async (req, res) => {
+  const secret = process.env.CRON_SECRET;
+  if (!secret || req.get('authorization') !== `Bearer ${secret}`) return res.status(401).json({ error: 'Not allowed.' });
+  res.json({ sent: await sendDueReminders() });
 });
 
 export { dbPing };
